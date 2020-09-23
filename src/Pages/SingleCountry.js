@@ -41,9 +41,11 @@ const SingleCoutry = () => {
       history.goBack();
    };
 
-   // Link to Google Map
+   // Redirect to Google Map in new tab
    const handleLinkToMap = () => {
-      window.location = `https://www.google.com/maps/search/?api=1&query=${country.name}`;
+      window.open(
+         `https://www.google.com/maps/search/?api=1&query=${country.name}`
+      );
    };
 
    // Number format for population
