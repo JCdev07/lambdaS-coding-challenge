@@ -7,6 +7,7 @@ import "./App.css";
 import Home from "./Pages/Home";
 import SingleCountry from "./Pages/SingleCountry";
 import Loader from "./Components/Loader";
+import { CountriesContext } from "./Context/CountriesContext";
 
 function App() {
    // Countries State
@@ -34,21 +35,23 @@ function App() {
 
    return (
       <Router>
-         {isLoading ? (
-            <Loader />
-         ) : (
-            <div className="App">
-               <Switch>
-                  <Route exact path="/">
-                     <Home countries={countries} />
-                  </Route>
-                  <Route
-                     path="/countries/:countryName"
-                     component={SingleCountry}
-                  />
-               </Switch>
-            </div>
-         )}
+         <CountriesContext.Provider value={[countries, setCountries]}>
+            {isLoading ? (
+               <Loader />
+            ) : (
+               <div className="App">
+                  <Switch>
+                     <Route exact path="/">
+                        <Home countries={countries} />
+                     </Route>
+                     <Route
+                        path="/countries/:countryName"
+                        component={SingleCountry}
+                     />
+                  </Switch>
+               </div>
+            )}
+         </CountriesContext.Provider>
       </Router>
    );
 }

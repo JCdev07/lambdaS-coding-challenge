@@ -1,6 +1,7 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
+import { CountriesContext } from "./../Context/CountriesContext";
 import { Loader } from "./../Components/Loader";
 
 const SingleCoutry = () => {
@@ -8,12 +9,17 @@ const SingleCoutry = () => {
 
    const { countryName } = useParams();
 
-   const [isLoading, setIsLoading] = useState(false);
-
    const [country, setCountry] = useState({});
+
+   const [countries, setCountries] = useContext(CountriesContext);
+
+   const [borderCountriesState, setBorderCountriesState] = useState([]);
+
+   const [isLoading, setIsLoading] = useState(false);
 
    useEffect(() => {
       setIsLoading(true);
+      let borderCountries = [];
 
       // fetch country
       setTimeout(() => {
@@ -21,8 +27,22 @@ const SingleCoutry = () => {
             .get(`https://restcountries.eu/rest/v2/name/${countryName}`)
             .then((res) => {
                setCountry(res.data[0]);
-               console.log(res);
+               console.log(res.data[0]);
                setIsLoading(false);
+               return res.data[0].borders;
+            })
+            .then((borders) => {
+               borders.forEach((border) => {
+                  countries.forEach((country) => {
+                     if (country.alpha3Code === border) {
+                        borderCountries.push(country);
+                     }
+                  });
+               });
+               return borderCountries;
+            })
+            .then((borderCountries) => {
+               setBorderCountriesState(borderCountries);
             })
             .catch((error) => {
                console.log(`ERROR: ${error}`);
@@ -34,7 +54,14 @@ const SingleCoutry = () => {
       return () => {
          setCountry({});
       };
-   }, [countryName]);
+   }, []);
+
+   // Redirect to Border Countries
+   const handleRedirect = (e) => {
+      console.log(e);
+      history.push(`/countries/${e}`);
+      window.location.reload();
+   };
 
    // Back Button
    const handleClick = () => {
@@ -53,7 +80,9 @@ const SingleCoutry = () => {
 
    return (
       <div className="container mt-5">
-         {!isLoading ? (
+         {isLoading ? (
+            <Loader loading={isLoading} />
+         ) : (
             <>
                <div className="row">
                   <div className="col-12">
@@ -149,9 +178,28 @@ const SingleCoutry = () => {
                      </div>
                   </div>
                </div>
+               <div className="row">
+                  <div className="col-12">
+                     <h3>Border Countries</h3>
+                     <div className="col-8 d-flex">
+                        {borderCountriesState.map((border) => {
+                           return (
+                              <button
+                                 key={`${border}${borderCountriesState.indexOf(
+                                    border
+                                 )}`}
+                                 onClick={() => {
+                                    handleRedirect(border.name);
+                                 }}
+                              >
+                                 {border.name}
+                              </button>
+                           );
+                        })}
+                     </div>
+                  </div>
+               </div>
             </>
-         ) : (
-            <Loader loading={isLoading} />
          )}
       </div>
    );
