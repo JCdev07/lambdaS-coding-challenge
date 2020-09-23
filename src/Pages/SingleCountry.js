@@ -22,37 +22,40 @@ const SingleCoutry = () => {
       let borderCountries = [];
 
       // fetch country
-      axios
-         .get(`https://restcountries.eu/rest/v2/name/${countryName}`)
-         .then((res) => {
-            setCountry(res.data[0]);
-            console.log(res.data[0]);
-            setIsLoading(false);
-            return res.data[0].borders;
-         })
-         .then((borders) => {
-            borders.forEach((border) => {
-               countries.forEach((country) => {
-                  if (country.alpha3Code === border) {
-                     borderCountries.push(country);
-                  }
+      setTimeout(() => {
+         axios
+            .get(`https://restcountries.eu/rest/v2/name/${countryName}`)
+            .then((res) => {
+               setCountry(res.data[0]);
+               console.log(res.data[0]);
+               setIsLoading(false);
+               return res.data[0].borders;
+            })
+            .then((borders) => {
+               borders.forEach((border) => {
+                  countries.forEach((country) => {
+                     if (country.alpha3Code === border) {
+                        borderCountries.push(country);
+                     }
+                  });
                });
+               return borderCountries;
+            })
+            .then((borderCountries) => {
+               setBorderCountriesState(borderCountries);
+            })
+            .catch((error) => {
+               console.log(`ERROR: ${error}`);
+               setIsLoading(false);
             });
-            return borderCountries;
-         })
-         .then((borderCountries) => {
-            setBorderCountriesState(borderCountries);
-         })
-         .catch((error) => {
-            console.log(`ERROR: ${error}`);
-            setIsLoading(false);
-         });
+      }, 300);
 
       // Cleanup
       return () => {
          setCountry({});
+         setBorderCountriesState([]);
       };
-   }, []);
+   }, [countryName]);
 
    // Redirect to Border Countries
    const handleRedirect = (e) => {
@@ -177,31 +180,31 @@ const SingleCoutry = () => {
                      </div>
                   </div>
                </div>
-               {borderCountriesState.length ? (
-                  <div className="row">
-                     <div className="col-12">
-                        <h3>Border Countries</h3>
-                        <div className="col-8 d-flex">
-                           {borderCountriesState.map((border) => {
-                              return (
-                                 <button
-                                    key={`${border}${borderCountriesState.indexOf(
-                                       border
-                                    )}`}
-                                    onClick={() => {
-                                       handleRedirect(border.name);
-                                    }}
-                                 >
-                                    {border.name}
-                                 </button>
-                              );
-                           })}
-                        </div>
+               <div className="row">
+                  <div className="col-12">
+                     <h3>
+                        {borderCountriesState.length
+                           ? "Border Countries:"
+                           : "No Border Countries"}
+                     </h3>
+                     <div className="col-8 d-flex">
+                        {borderCountriesState.map((border) => {
+                           return (
+                              <button
+                                 key={`${border}${borderCountriesState.indexOf(
+                                    border
+                                 )}`}
+                                 onClick={() => {
+                                    handleRedirect(border.name);
+                                 }}
+                              >
+                                 {border.name}
+                              </button>
+                           );
+                        })}
                      </div>
                   </div>
-               ) : (
-                  ""
-               )}
+               </div>
             </>
          )}
       </div>
