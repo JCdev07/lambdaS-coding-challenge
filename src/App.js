@@ -44,10 +44,7 @@ function App() {
                      <Route exact path="/">
                         <Home countries={countries} />
                      </Route>
-                     <Route
-                        path="/countries/:countryName"
-                        component={SingleCountry}
-                     />
+                     <Route path="/:countryName" component={SingleCountry} />
                   </Switch>
                </div>
             )}

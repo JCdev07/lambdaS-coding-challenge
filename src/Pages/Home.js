@@ -1,5 +1,17 @@
 import React, { useState } from "react";
 import CountriesCard from "./../Components/CountriesCard";
+import styled from "styled-components";
+
+const SearchInput = styled.input`
+   border-radius: 180px;
+   transition: all 0.2s ease-in;
+
+   &:focus {
+      transform: scaleX(1.02);
+      border-color: #34421e;
+      box-shadow: 0 0 0 0.2rem rgba(53, 67, 30, 0.25);
+   }
+`;
 
 const Home = ({ countries }) => {
    // search filter state
@@ -22,16 +34,16 @@ const Home = ({ countries }) => {
 
    return (
       <div className="container">
-         <div className="col-12">
+         <div className="col-12 my-4">
             <div className="row">
                <div className="col-12 col-md-10 col-lg-8 mx-auto">
-                  <label htmlFor="search">Search:</label>
-                  <input
+                  <SearchInput
                      type="text"
                      name="search"
                      id="search"
                      className="form-control"
                      onChange={handleSearchChange}
+                     placeholder="Search Country"
                   />
                </div>
             </div>
