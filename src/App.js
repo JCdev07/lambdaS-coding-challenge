@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
@@ -15,7 +15,7 @@ function App() {
    // Loading State
    const [isLoading, setIsLoading] = useState(false);
 
-   useEffect(() => {
+   useMemo(() => {
       setIsLoading(true);
 
       setTimeout(() => {
@@ -30,11 +30,6 @@ function App() {
                setIsLoading(false);
             });
       }, 1200);
-
-      // Cleanup
-      return () => {
-         setCountries([]);
-      };
    }, []);
 
    return (
