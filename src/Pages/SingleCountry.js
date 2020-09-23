@@ -22,33 +22,31 @@ const SingleCoutry = () => {
       let borderCountries = [];
 
       // fetch country
-      setTimeout(() => {
-         axios
-            .get(`https://restcountries.eu/rest/v2/name/${countryName}`)
-            .then((res) => {
-               setCountry(res.data[0]);
-               console.log(res.data[0]);
-               setIsLoading(false);
-               return res.data[0].borders;
-            })
-            .then((borders) => {
-               borders.forEach((border) => {
-                  countries.forEach((country) => {
-                     if (country.alpha3Code === border) {
-                        borderCountries.push(country);
-                     }
-                  });
+      axios
+         .get(`https://restcountries.eu/rest/v2/name/${countryName}`)
+         .then((res) => {
+            setCountry(res.data[0]);
+            console.log(res.data[0]);
+            setIsLoading(false);
+            return res.data[0].borders;
+         })
+         .then((borders) => {
+            borders.forEach((border) => {
+               countries.forEach((country) => {
+                  if (country.alpha3Code === border) {
+                     borderCountries.push(country);
+                  }
                });
-               return borderCountries;
-            })
-            .then((borderCountries) => {
-               setBorderCountriesState(borderCountries);
-            })
-            .catch((error) => {
-               console.log(`ERROR: ${error}`);
-               setIsLoading(false);
             });
-      }, 1200);
+            return borderCountries;
+         })
+         .then((borderCountries) => {
+            setBorderCountriesState(borderCountries);
+         })
+         .catch((error) => {
+            console.log(`ERROR: ${error}`);
+            setIsLoading(false);
+         });
 
       // Cleanup
       return () => {
@@ -63,9 +61,10 @@ const SingleCoutry = () => {
       window.location.reload();
    };
 
-   // Back Button
+   // Go to Home Page Button
    const handleClick = () => {
-      history.goBack();
+      history.push(`/`);
+      // history.goBack();
    };
 
    // Redirect to Google Map in new tab
@@ -86,7 +85,7 @@ const SingleCoutry = () => {
             <>
                <div className="row">
                   <div className="col-12">
-                     <button onClick={handleClick}>Back</button>
+                     <button onClick={handleClick}>Back To Countries</button>
                      <button onClick={handleLinkToMap}>Link to Map</button>
                   </div>
                </div>
@@ -178,27 +177,31 @@ const SingleCoutry = () => {
                      </div>
                   </div>
                </div>
-               <div className="row">
-                  <div className="col-12">
-                     <h3>Border Countries</h3>
-                     <div className="col-8 d-flex">
-                        {borderCountriesState.map((border) => {
-                           return (
-                              <button
-                                 key={`${border}${borderCountriesState.indexOf(
-                                    border
-                                 )}`}
-                                 onClick={() => {
-                                    handleRedirect(border.name);
-                                 }}
-                              >
-                                 {border.name}
-                              </button>
-                           );
-                        })}
+               {borderCountriesState.length ? (
+                  <div className="row">
+                     <div className="col-12">
+                        <h3>Border Countries</h3>
+                        <div className="col-8 d-flex">
+                           {borderCountriesState.map((border) => {
+                              return (
+                                 <button
+                                    key={`${border}${borderCountriesState.indexOf(
+                                       border
+                                    )}`}
+                                    onClick={() => {
+                                       handleRedirect(border.name);
+                                    }}
+                                 >
+                                    {border.name}
+                                 </button>
+                              );
+                           })}
+                        </div>
                      </div>
                   </div>
-               </div>
+               ) : (
+                  ""
+               )}
             </>
          )}
       </div>
