@@ -1,9 +1,11 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import { Loader } from "./../Components/Loader";
 
 const SingleCoutry = () => {
+   const history = useHistory();
+
    const { countryName } = useParams();
 
    const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +36,11 @@ const SingleCoutry = () => {
       };
    }, [countryName]);
 
+   // Back Button
+   const handleClick = () => {
+      history.goBack();
+   };
+
    // Number format for population
    const populationFormat = new Intl.NumberFormat("en-US", {});
 
@@ -41,6 +48,11 @@ const SingleCoutry = () => {
       <div className="container mt-5">
          {!isLoading ? (
             <>
+               <div className="row">
+                  <div className="col-12">
+                     <button onClick={handleClick}>Back</button>
+                  </div>
+               </div>
                <div className="row mt-5">
                   <div className="col-12 col-lg-6">
                      <img
