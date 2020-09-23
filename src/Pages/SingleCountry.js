@@ -41,6 +41,11 @@ const SingleCoutry = () => {
       history.goBack();
    };
 
+   // Link to Google Map
+   const handleLinkToMap = () => {
+      window.location = `https://www.google.com/maps/search/?api=1&query=${country.name}`;
+   };
+
    // Number format for population
    const populationFormat = new Intl.NumberFormat("en-US", {});
 
@@ -51,6 +56,7 @@ const SingleCoutry = () => {
                <div className="row">
                   <div className="col-12">
                      <button onClick={handleClick}>Back</button>
+                     <button onClick={handleLinkToMap}>Link to Map</button>
                   </div>
                </div>
                <div className="row mt-5">
