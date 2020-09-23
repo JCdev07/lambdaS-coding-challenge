@@ -6,6 +6,7 @@ import "./App.css";
 // Pages & Components
 import Home from "./Pages/Home";
 import SingleCountry from "./Pages/SingleCountry";
+import Page404 from "./Pages/Page404";
 import Loader from "./Components/Loader";
 import { CountriesContext } from "./Context/CountriesContext";
 
@@ -44,7 +45,14 @@ function App() {
                      <Route exact path="/">
                         <Home countries={countries} />
                      </Route>
-                     <Route path="/:countryName" component={SingleCountry} />
+                     <Route exact path="/countries">
+                        <Home countries={countries} />
+                     </Route>
+                     <Route
+                        path="/countries/:countryName"
+                        component={SingleCountry}
+                     />
+                     <Route path="*" component={Page404} />
                   </Switch>
                </div>
             )}

@@ -31,7 +31,7 @@ export const Loader = ({ loading }) => {
                      <SyncLoader
                         css={override}
                         size={20}
-                        color={"#36D7B7"}
+                        color={"#34421e"}
                         loading={loading}
                      />
                   </SweetLoading>

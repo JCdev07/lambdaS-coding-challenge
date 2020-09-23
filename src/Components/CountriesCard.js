@@ -50,7 +50,7 @@ const CountriesCard = ({ country }) => {
       <CardContainer className="col-12 col-md-6 col-lg-4 px-3 py-3">
          <Link
             to={{
-               pathname: `/${country.name}`,
+               pathname: `/countries/${country.name}`,
                state: {
                   country,
                },
