@@ -1,3 +1,13 @@
+## To Test Application
+
+### Install Dependencies
+
+`npm install`
+
+### Run Application
+
+`npm start`
+
 ## Features
 
 ### Search Filter
